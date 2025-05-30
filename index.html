@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <title>Daftar Surat Al-Qur'an</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.15);
+        }
+        .surah-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .surah-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 12px 32px 0 rgba(59,130,246,0.15);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-200 min-h-screen p-6 text-gray-800">
+    <footer class="mb-6 text-center text-gray-500 text-sm">
+        Dibuat oleh 
+        <a href="https://github.com/mirzadanishfaturrahman" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-600 hover:underline">
+            Mirza Dev 
+        </a>
+        <span aria-label="love" role="img">Dengan ❤️</span>
+    </footer>
+    <div class="max-w-5xl mx-auto">
+        <div class="flex flex-col items-center mb-8">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 flex items-center justify-center shadow-lg mb-3">
+                <span class="text-white text-3xl">📖</span>
+            </div>
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight text-center drop-shadow">Daftar Surat Al-Qur'an</h1>
+            <p class="text-lg text-gray-600 text-center max-w-xl">Temukan dan baca surat-surat Al-Qur'an dengan tampilan modern dan interaktif.</p>
+        </div>
+        <div id="surahList" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <!-- List surat -->
+        </div>
+    </div>
+
+    <script>
+        const surahList = document.getElementById('surahList');
+
+        fetch('https://api.quran.gading.dev/surah')
+            .then(res => res.json())
+            .then(data => {
+                data.data.forEach(surah => {
+                    const div = document.createElement('div');
+                    div.className = "glass surah-card rounded-xl p-5 flex flex-col items-start border border-gray-200 hover:border-blue-400";
+                    div.innerHTML = `
+                        <a href="baca.html?surah=${surah.number}" class="w-full">
+                            <div class="flex items-center mb-2">
+                                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 text-white font-bold text-lg shadow">${surah.number}</span>
+                                <span class="ml-3 font-bold text-lg text-gray-900">${surah.name.transliteration.id}</span>
+                            </div>
+                            <div class="flex justify-between items-center w-full">
+                                <span class="text-sm text-gray-600">${surah.name.short}</span>
+                                <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold">${surah.numberOfVerses} ayat</span>
+                            </div>
+                        </a>
+                    `;
+                    surahList.appendChild(div);
+                });
+            });
+    </script>
+</body>
+</html>
